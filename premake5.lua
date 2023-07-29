@@ -3,8 +3,8 @@ project "ImGUI"
 	language "C"
 	staticruntime "off"
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("Binaries/" .. outputdir .. "/%{prj.name}")
+	objdir ("Intermediate/" .. outputdir .. "/%{prj.name}")
 
 	files {
         "imgui.h",
@@ -20,25 +20,23 @@ project "ImGUI"
 		"imstb_truetype.h",
 		"backends/imgui_impl_glfw.h",
 		"backends/imgui_impl_glfw.cpp",
-		"backends/imgui_impl_vulkan.h",
-        "backends/imgui_impl_vulkan.cpp"
+		"backends/imgui_impl_opengl3.h",
+        	"backends/imgui_impl_opengl3.cpp"
 	}
     
     includedirs {
-        "../glfw/include",
-        "../imgui",
+        "../GLFW/include",
+        "../ImGUI",
         "backends",
-        "C:/VulkanSDK/1.3.216.0/Include"
 	}
     
     links {
         "GLFW.lib",
-        "vulkan-1.lib"
+        "opengl32.lib"
     }
     
-    libdirs{
-        "C:/VulkanSDK/1.3.216.0/Lib",
-        "../glfw/bin/Debug-x86_64/GLFW"
+    libdirs {
+        "../GLFW/Binaries/Debug/GLFW"
     }
 
 	filter "configurations:Debug"
@@ -47,4 +45,9 @@ project "ImGUI"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"
+		optimize "speed"
+
+	filter "configurations:Dist"
+		runtime "Release"
+		optimize "full"
+		symbols "off"
