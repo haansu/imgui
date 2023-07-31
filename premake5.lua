@@ -1,10 +1,10 @@
 project "ImGUI"
 	kind "StaticLib"
-	language "C"
+	language "C++"
 	staticruntime "off"
 
-	targetdir ("Binaries/" .. outputdir .. "/%{prj.name}")
-	objdir ("Intermediate/" .. outputdir .. "/%{prj.name}")
+	targetdir ("Binaries/" .. OutputDir .. "/%{prj.name}")
+	objdir ("Intermediate/" .. OutputDir .. "/%{prj.name}")
 
 	files {
         "imgui.h",
@@ -21,22 +21,27 @@ project "ImGUI"
 		"backends/imgui_impl_glfw.h",
 		"backends/imgui_impl_glfw.cpp",
 		"backends/imgui_impl_opengl3.h",
-        	"backends/imgui_impl_opengl3.cpp"
+        "backends/imgui_impl_opengl3.cpp",
+		"backends/imgui_impl_vulkan.h",
+        "backends/imgui_impl_vulkan.cpp"
 	}
     
     includedirs {
         "../GLFW/include",
         "../ImGUI",
         "backends",
+		"%{IncludeDir.Vulkan}"
 	}
     
     links {
-        "GLFW.lib",
-        "opengl32.lib"
+        "GLFW",
+        "opengl32",
+		"vulkan-1"
     }
     
     libdirs {
-        "../GLFW/Binaries/Debug/GLFW"
+        "../GLFW/Binaries/" .. OutputDir .. "/GLFW",
+		"%{LibDir.Vulkan}"
     }
 
 	filter "configurations:Debug"
